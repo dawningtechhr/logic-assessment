@@ -8,9 +8,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
-  --green:#2d5a3d;--green-l:#e8f5ed;--paper:#f8f6f1;--paper2:#f2f0eb;--paper3:#e8e5de;
+  --green:#e8671a;--green-l:#fef3ec;--paper:#f8f6f1;--paper2:#f2f0eb;--paper3:#e8e5de;
   --ink:#3d3a34;--ink2:#7a7570;--ink3:#b0acaa;--radius:10px;--radius-lg:14px;
-  --accent:#2d5a3d;--accent-light:#e8f5ed;
+  --accent:#e8671a;--accent2:#c9540f;--accent-light:#fef3ec;--navy:#1a3a8f;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;background:var(--paper);color:var(--ink);display:flex;min-height:100vh}
@@ -21,7 +21,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;ba
 .sidebar-nav{flex:1;padding:12px 0}
 .nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;font-size:14px;color:var(--ink2);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
 .nav-item:hover{background:var(--paper);color:var(--ink)}
-.nav-item.active{background:var(--green-l);color:var(--green);border-left-color:var(--green);font-weight:600}
+.nav-item.active{background:var(--green-l);color:var(--green);border-left-color:var(--accent);font-weight:600}
 .sidebar-bottom{padding:16px 20px;border-top:1px solid var(--paper3)}
 .admin-chip{display:flex;align-items:center;gap:10px;font-size:13px}
 .admin-avatar{width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
@@ -103,7 +103,7 @@ tbody tr:hover{background:var(--paper)}
 .score-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .score-row .lbl{font-size:13px;width:72px;flex-shrink:0}
 .score-bar-wrap{flex:1;height:8px;background:#e8e5de;border-radius:4px;overflow:hidden}
-.score-bar-fill{height:100%;border-radius:4px;background:#2d5a3d}
+.score-bar-fill{height:100%;border-radius:4px;background:#e8671a}
 .score-pct{font-size:13px;font-weight:500;width:36px;text-align:right}
 
 /* dim analysis card */
@@ -511,8 +511,8 @@ function buildRadarSVG(scores){
     var dy=ly<cy-10?-6:ly>cy+10?6:0;
     labelSvg+='<text x="'+lx+'" y="'+(ly+dy+4)+'" text-anchor="'+anchor+'" font-size="12" font-weight="600" fill="'+col+'" font-family="Noto Sans TC,sans-serif">'+d+'</text>';
   });
-  var dots=vals.map((v,i)=>{var[px,py]=pt(R*v,i);return'<circle cx="'+px+'" cy="'+py+'" r="4" fill="#2d5a3d"/>';}).join('');
-  return '<svg width="'+(size+20)+'" height="'+(size+20)+'" viewBox="0 0 '+vb+' '+vb+'" xmlns="http://www.w3.org/2000/svg">'+gridSvg+'<polygon points="'+dataPts+'" fill="rgba(45,90,61,0.15)" stroke="#2d5a3d" stroke-width="2.5" stroke-linejoin="round"/>'+dots+labelSvg+'</svg>';
+  var dots=vals.map((v,i)=>{var[px,py]=pt(R*v,i);return'<circle cx="'+px+'" cy="'+py+'" r="4" fill="#e8671a"/>';}).join('');
+  return '<svg width="'+(size+20)+'" height="'+(size+20)+'" viewBox="0 0 '+vb+' '+vb+'" xmlns="http://www.w3.org/2000/svg">'+gridSvg+'<polygon points="'+dataPts+'" fill="rgba(232,103,26,0.15)" stroke="#e8671a" stroke-width="2.5" stroke-linejoin="round"/>'+dots+labelSvg+'</svg>';
 }
 
 function openReport(sheetRow){
@@ -524,7 +524,7 @@ function openReport(sheetRow){
   // ── Weighted score banner ──
   var ws=r.weightedScore||0;
   var wsLabel=ws>=85?'卓越':ws>=70?'優秀':ws>=55?'良好':ws>=40?'中等':'需加強';
-  var wsColor=ws>=85?'#1a5c2a':ws>=70?'#2e7d32':ws>=55?'#7a5c00':ws>=40?'#c0392b':'#8b2020';
+  var wsColor=ws>=85?'#1a3a8f':ws>=70?'#1e4da6':ws>=55?'#7a5c00':ws>=40?'#c0392b':'#8b2020';
 
   // ── Bars (4 dims) ──
   var dimList=[
@@ -648,7 +648,7 @@ function openReport(sheetRow){
     <div style="font-size:13px;font-weight:500;color:var(--ink2);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--paper3)">總體評估</div>
     <div style="display:grid;grid-template-columns:${pros.length>0&&cons.length>0?'1fr 1fr':'1fr'};gap:12px;margin-bottom:20px">
       ${pros.length>0?`<div style="background:#f0faf4;border:1px solid #a8d5b5;border-radius:var(--radius);padding:14px">
-        <div style="font-size:13px;font-weight:700;color:#1a5c2a;margin-bottom:10px">✓ 優點</div>
+        <div style="font-size:13px;font-weight:700;color:#e8671a;margin-bottom:10px">✓ 優點</div>
         ${pros.map((p,i)=>'<div style="font-size:13px;color:var(--ink);margin-bottom:6px">'+(i+1)+'. '+p+'</div>').join('')}
       </div>`:''}
       ${cons.length>0?`<div style="background:#fef9ec;border:1px solid #e8cc7a;border-radius:var(--radius);padding:14px">
