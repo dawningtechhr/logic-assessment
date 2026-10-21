@@ -828,5 +828,30 @@ function downloadPDF(){
   });
 }
 </script>
+<script>
+/* ── 整合後台（HR 管理後台以 iframe 嵌入）支援：加上 ?embed=1 時略過登入，改由外層傳入登入身分 ── */
+(function(){
+  if(new URLSearchParams(location.search).get('embed')!=='1')return;
+  document.documentElement.classList.add('embed');
+  var st=document.createElement('style');
+  st.textContent='html.embed .sidebar-logo,html.embed .sidebar-footer,html.embed .sidebar-bottom{display:none!important}';
+  document.head.appendChild(st);
+  window.addEventListener('message',async function(e){
+    if(e.source!==window.parent||!e.data||e.data.type!=='dx-admin'||window.__dxIn)return;
+    window.__dxIn=true;
+    currentAdmin=e.data.admin;
+    try{
+      document.getElementById('admin-avatar').textContent=currentAdmin.name.charAt(0);
+      document.getElementById('admin-name-display').textContent=currentAdmin.name;
+      document.getElementById('admin-role-display').textContent=currentAdmin.role==='super'?'超級管理員':'管理員';
+      document.getElementById('page-login').style.display='none';
+      document.getElementById('page-app').style.display='flex';
+      document.getElementById('cfg-url-display').textContent='目前連線（內建）：'+HARDCODED_URL;
+      await refreshAll(); updateSortHeaders();
+    }catch(err){window.__dxIn=false;console.error(err);}
+  });
+  parent.postMessage({type:'dx-ready'},'*');
+})();
+</script>
 </body>
 </html>
